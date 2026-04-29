@@ -4,6 +4,11 @@ uvicorn main:app --reload
 
 зависимости установить из requirements.txt
 
+рекомендуется создать .env по примеру
+
+SECRET_KEY=любойсекретныйключ
+DATABASE_URL=postgresql://postgres:пароль@localhost:5432/todo_db
+
 Запуск тестов
 
 Тесты расположены в папке tests/.
