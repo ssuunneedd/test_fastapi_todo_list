@@ -1,1 +1,914 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1e2a1e 100%);
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0c0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(30, 35, 30, 0.95);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(152, 251, 152, 0.2);
+        }
+
+        .header-lang {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: #3a453a;
+            color: #b8c0a8;
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #6b8c5c, #b88d8d);
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #9bbb8a, #d4a5a5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #9a8a70;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: #3a453a;
+            border: none;
+            border-radius: 24px;
+            color: #b8c0a8;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #6b8c5c, #b88d8d);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b8a88c;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            background: #2a352a;
+            border: 1px solid #5a6e4a;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            color: #e0e0c0;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #9bbb8a;
+            box-shadow: 0 0 0 3px rgba(107, 140, 92, 0.2);
+        }
+
+        input::placeholder {
+            color: #6a7a5a;
+        }
+
+        input[type="date"] {
+            color-scheme: dark;
+        }
+
+        button {
+            background: linear-gradient(135deg, #6b8c5c, #b88d8d);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            filter: brightness(1.05);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .error {
+            color: #d4a5a5;
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        .user-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(152, 251, 152, 0.2);
+        }
+
+        .user-greeting {
+            font-size: 1rem;
+            color: #b8a88c;
+        }
+
+        .user-name {
+            color: #9bbb8a;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .logout-btn {
+            background: #3a453a;
+            color: #b8c0a8;
+            padding: 8px 20px;
+            font-size: 13px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .stat-card {
+            background: #2a352a;
+            padding: 16px 12px;
+            border-radius: 24px;
+            text-align: center;
+            transition: transform 0.2s;
+            border: 1px solid rgba(152, 251, 152, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: #6b8c5c;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #9bbb8a, #d4a5a5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #9a8a70;
+            margin-top: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .create-section {
+            background: #2a352a;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(152, 251, 152, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .form-row2 {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .top-btn {
+            background: #3a453a;
+            color: #9bbb8a;
+            margin-bottom: 16px;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .search-sort {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #2a352a;
+            border: 1px solid #5a6e4a;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #e0e0c0;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #9bbb8a;
+        }
+
+        #sortSelect {
+            flex: 1;
+            min-width: 210px;
+            padding: 12px 16px;
+            background: #2a352a;
+            border: 1px solid #5a6e4a;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #e0e0c0;
+            cursor: pointer;
+        }
+
+        #sortSelect:focus {
+            outline: none;
+            border-color: #9bbb8a;
+        }
+
+        .task-list {
+            margin-top: 20px;
+        }
+
+        .task-item {
+            background: #2a352a;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(152, 251, 152, 0.2);
+        }
+
+        .task-item:hover {
+            transform: translateX(4px);
+            border-color: #6b8c5c;
+            background: #354035;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #c0d0a8;
+            margin-bottom: 6px;
+        }
+
+        .task-desc {
+            font-size: 0.8rem;
+            color: #9a8a70;
+            margin-bottom: 8px;
+        }
+
+        .task-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(180, 140, 110, 0.2);
+            color: #d4a5a5;
+        }
+
+        .status-in_progress {
+            background: rgba(107, 140, 92, 0.2);
+            color: #9bbb8a;
+        }
+
+        .status-done {
+            background: rgba(107, 140, 92, 0.3);
+            color: #8aae7a;
+        }
+
+        .priority-stars {
+            color: #d4a5a5;
+        }
+
+        .due-date {
+            color: #9bbb8a;
+        }
+
+        .due-date.overdue {
+            color: #d4a5a5;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .task-actions select {
+            padding: 8px 12px;
+            width: auto;
+            background: #3a453a;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .delete-btn {
+            background: #3a3530;
+            color: #d4a5a5;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover {
+            background: #4a453a;
+            color: #e6b5b5;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #9a8a70;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .task-item {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .task-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .form-row, .form-row2 {
+                grid-template-columns: 1fr;
+            }
+            .search-sort {
+                flex-direction: column;
+            }
+            #sortSelect {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Auth Screen -->
+    <div id="authScreen">
+        <div class="card">
+            <div class="header-lang">
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+                    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+                </div>
+            </div>
+            <h1 id="title">🌸 TODO 🌸</h1>
+            <div id="subtitle" class="subtitle">весенние задачи</div>
+            <div class="tabs">
+                <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Вход</button>
+                <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">Регистрация</button>
+            </div>
+            <div class="input-group">
+                <label id="labelUsername">🌿 Логин</label>
+                <input type="text" id="username" placeholder="ваше имя">
+            </div>
+            <div class="input-group">
+                <label id="labelPassword">🌸 Пароль</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            <button id="authBtn" onclick="submitAuth()">Войти</button>
+            <div id="authError" class="error"></div>
+        </div>
+    </div>
+
+    <!-- App Screen -->
+    <div id="appScreen" style="display: none;">
+        <div class="card">
+            <div class="header-lang">
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+                    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+                </div>
+            </div>
+            <h1 id="appTitle">🍃 TODO 🍃</h1>
+            <div id="appSubtitle" class="subtitle">мои задачи</div>
+
+            <div class="user-bar">
+                <div class="user-greeting">
+                    <span id="greetingText">🌸 Привет,</span> <span id="userName" class="user-name"></span>!
+                </div>
+                <button class="logout-btn" id="logoutBtn" onclick="logout()">Выйти</button>
+            </div>
+
+            <!-- Create Task -->
+            <div class="create-section">
+                <div class="form-row">
+                    <input type="text" id="newTitle" placeholder="Название задачи...">
+                    <input type="date" id="newDueDate" style="width: auto;">
+                </div>
+                <div class="form-row2">
+                    <input type="text" id="newDesc" placeholder="Описание...">
+                    <select id="newPriority">
+                        <option value="20">★☆☆☆☆ 1</option>
+                        <option value="40">★★☆☆☆ 2</option>
+                        <option value="60">★★★☆☆ 3</option>
+                        <option value="80">★★★★☆ 4</option>
+                        <option value="100">★★★★★ 5</option>
+                    </select>
+                </div>
+                <div class="form-row2">
+                    <select id="newStatus">
+                        <option value="pending">🌱 Ожидает</option>
+                        <option value="in_progress">🌿 В работе</option>
+                        <option value="done">🌸 Готово</option>
+                    </select>
+                    <div></div>
+                </div>
+                <button id="createBtn" onclick="createTask()" style="width: 100%; margin-top: 8px;">+ Добавить</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label" id="statTotalLabel">Всего</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statProgress">0</div>
+                    <div class="stat-label" id="statProgressLabel">В работе</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statDone">0</div>
+                    <div class="stat-label" id="statDoneLabel">Готово</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statPending">0</div>
+                    <div class="stat-label" id="statPendingLabel">Ожидает</div>
+                </div>
+            </div>
+
+            <!-- TOP-5 Button -->
+            <button class="top-btn" id="topBtn" onclick="loadTopTasks()">🏆 ТОП-5 приоритетных задач</button>
+
+            <!-- Search and Sort -->
+            <div class="search-sort">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Поиск..." oninput="debouncedSearch()">
+                </div>
+                <select id="sortSelect" onchange="loadTasks()">
+                    <option value="created_at">📅 По дате создания</option>
+                    <option value="due_date">⏰ По сроку (сначала срочные)</option>
+                    <option value="priority">⭐ По приоритету</option>
+                    <option value="title">📝 По названию</option>
+                </select>
+            </div>
+
+            <!-- Tasks -->
+            <div id="tasksList" class="task-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let token = localStorage.getItem('token') || '';
+    let currentMode = 'login';
+    let searchTimeout;
+    let currentLang = 'ru';
+
+    const translations = {
+        ru: {
+            title: '🌸 TODO 🌸',
+            subtitle: 'весенние задачи',
+            tabLogin: 'Вход',
+            tabRegister: 'Регистрация',
+            labelUsername: '🌿 Логин',
+            labelPassword: '🌸 Пароль',
+            authBtnLogin: 'Войти',
+            authBtnRegister: 'Создать',
+            appTitle: '🍃 TODO 🍃',
+            appSubtitle: 'мои задачи',
+            greeting: '🌸 Привет,',
+            logout: 'Выйти',
+            createBtn: '+ Добавить',
+            statTotal: 'Всего',
+            statProgress: 'В работе',
+            statDone: 'Готово',
+            statPending: 'Ожидает',
+            topBtn: '🏆 ТОП-5 приоритетных задач',
+            searchPlaceholder: '🔍 Поиск...',
+            sortDate: '📅 По дате создания',
+            sortDueDate: '⏰ По сроку (сначала срочные)',
+            sortPriority: '⭐ По приоритету',
+            sortTitle: '📝 По названию',
+            priority1: '★☆☆☆☆ 1',
+            priority2: '★★☆☆☆ 2',
+            priority3: '★★★☆☆ 3',
+            priority4: '★★★★☆ 4',
+            priority5: '★★★★★ 5',
+            statusPending: '🌱 Ожидает',
+            statusProgress: '🌿 В работе',
+            statusDone: '🌸 Готово',
+            emptyTasks: '🌸 Нет задач. Добавьте первую! 🌸',
+            deleteConfirm: 'Удалить задачу?',
+            titlePlaceholder: 'Название задачи...',
+            descPlaceholder: 'Описание...',
+            dueDatePlaceholder: 'Срок',
+            authErrorEmpty: 'Заполните все поля',
+            authSuccess: '✅ Аккаунт создан! Войдите'
+        },
+        en: {
+            title: '🌸 TODO 🌸',
+            subtitle: 'spring tasks',
+            tabLogin: 'Login',
+            tabRegister: 'Sign up',
+            labelUsername: '🌿 Username',
+            labelPassword: '🌸 Password',
+            authBtnLogin: 'Login',
+            authBtnRegister: 'Sign up',
+            appTitle: '🍃 TODO 🍃',
+            appSubtitle: 'my tasks',
+            greeting: '🌸 Hello,',
+            logout: 'Logout',
+            createBtn: '+ Add',
+            statTotal: 'Total',
+            statProgress: 'Progress',
+            statDone: 'Done',
+            statPending: 'Pending',
+            topBtn: '🏆 TOP-5 Priority Tasks',
+            searchPlaceholder: '🔍 Search...',
+            sortDate: '📅 By Date',
+            sortDueDate: '⏰ By Due Date (urgent first)',
+            sortPriority: '⭐ By Priority',
+            sortTitle: '📝 By Title',
+            priority1: '★☆☆☆☆ 1',
+            priority2: '★★☆☆☆ 2',
+            priority3: '★★★☆☆ 3',
+            priority4: '★★★★☆ 4',
+            priority5: '★★★★★ 5',
+            statusPending: '🌱 Pending',
+            statusProgress: '🌿 Progress',
+            statusDone: '🌸 Done',
+            emptyTasks: '🌸 No tasks. Add one! 🌸',
+            deleteConfirm: 'Delete task?',
+            titlePlaceholder: 'Task title...',
+            descPlaceholder: 'Description...',
+            dueDatePlaceholder: 'Due date',
+            authErrorEmpty: 'Fill all fields',
+            authSuccess: '✅ Account created! Login'
+        }
+    };
+
+    function updateLanguage() {
+        const t = translations[currentLang];
+        document.getElementById('title').innerHTML = t.title;
+        document.getElementById('subtitle').innerHTML = t.subtitle;
+        document.getElementById('tabLogin').innerHTML = t.tabLogin;
+        document.getElementById('tabRegister').innerHTML = t.tabRegister;
+        document.getElementById('labelUsername').innerHTML = t.labelUsername;
+        document.getElementById('labelPassword').innerHTML = t.labelPassword;
+        document.getElementById('authBtn').innerHTML = currentMode === 'login' ? t.authBtnLogin : t.authBtnRegister;
+        document.getElementById('appTitle').innerHTML = t.appTitle;
+        document.getElementById('appSubtitle').innerHTML = t.appSubtitle;
+        document.getElementById('greetingText').innerHTML = t.greeting;
+        document.getElementById('logoutBtn').innerHTML = t.logout;
+        document.getElementById('createBtn').innerHTML = t.createBtn;
+        document.getElementById('statTotalLabel').innerHTML = t.statTotal;
+        document.getElementById('statProgressLabel').innerHTML = t.statProgress;
+        document.getElementById('statDoneLabel').innerHTML = t.statDone;
+        document.getElementById('statPendingLabel').innerHTML = t.statPending;
+        document.getElementById('topBtn').innerHTML = t.topBtn;
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        document.getElementById('newDueDate').placeholder = t.dueDatePlaceholder;
+
+        const sortSelect = document.getElementById('sortSelect');
+        sortSelect.options[0].text = t.sortDate;
+        sortSelect.options[1].text = t.sortDueDate;
+        sortSelect.options[2].text = t.sortPriority;
+        sortSelect.options[3].text = t.sortTitle;
+
+        const prioritySelect = document.getElementById('newPriority');
+        prioritySelect.options[0].text = t.priority1;
+        prioritySelect.options[1].text = t.priority2;
+        prioritySelect.options[2].text = t.priority3;
+        prioritySelect.options[3].text = t.priority4;
+        prioritySelect.options[4].text = t.priority5;
+
+        document.getElementById('newStatus').options[0].text = t.statusPending;
+        document.getElementById('newStatus').options[1].text = t.statusProgress;
+        document.getElementById('newStatus').options[2].text = t.statusDone;
+        document.getElementById('newTitle').placeholder = t.titlePlaceholder;
+        document.getElementById('newDesc').placeholder = t.descPlaceholder;
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if ((currentLang === 'ru' && btn.innerHTML === 'RU') ||
+                (currentLang === 'en' && btn.innerHTML === 'EN')) {
+                btn.classList.add('active');
+            }
+        });
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        updateLanguage();
+        loadTasks();
+    }
+
+    async function api(method, path, body) {
+        const opts = { method, headers: {} };
+        if (token) opts.headers['Authorization'] = `Bearer ${token}`;
+        if (body) {
+            opts.headers['Content-Type'] = 'application/json';
+            opts.body = JSON.stringify(body);
+        }
+        const res = await fetch(path, opts);
+        if (!res.ok) throw new Error((await res.json()).detail || 'Error');
+        return res.status === 204 ? null : res.json();
+    }
+
+    function switchTab(mode) {
+        currentMode = mode;
+        const t = translations[currentLang];
+        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+            btn.classList.toggle('active', (mode === 'login' && i === 0) || (mode === 'register' && i === 1));
+        });
+        document.getElementById('authBtn').innerHTML = mode === 'login' ? t.authBtnLogin : t.authBtnRegister;
+        document.getElementById('authError').innerHTML = '';
+    }
+
+    async function submitAuth() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const t = translations[currentLang];
+        if (!username || !password) {
+            document.getElementById('authError').innerHTML = t.authErrorEmpty;
+            return;
+        }
+        try {
+            if (currentMode === 'register') {
+                await api('POST', `/register?username=${username}&password=${password}`);
+                document.getElementById('authError').innerHTML = t.authSuccess;
+                switchTab('login');
+            } else {
+                const data = await api('POST', `/login?username=${username}&password=${password}`);
+                token = data.access_token;
+                localStorage.setItem('token', token);
+                localStorage.setItem('username', username);
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'block';
+                document.getElementById('userName').innerHTML = username;
+                loadTasks();
+            }
+        } catch (e) {
+            document.getElementById('authError').innerHTML = e.message;
+        }
+    }
+
+    function logout() {
+        token = '';
+        localStorage.clear();
+        document.getElementById('authScreen').style.display = 'block';
+        document.getElementById('appScreen').style.display = 'none';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    }
+
+    async function loadTasks() {
+        try {
+            let url = `/tasks?sort_by=${document.getElementById('sortSelect').value}`;
+            let search = document.getElementById('searchInput').value;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            let tasks = await api('GET', url);
+            renderTasks(tasks);
+        } catch(e) {
+            if(e.message.includes('401')) logout();
+        }
+    }
+
+    async function loadTopTasks() {
+        try {
+            let tasks = await api('GET', '/tasks/top?n=5');
+            renderTasks(tasks);
+        } catch(e) {
+            alert(e.message);
+        }
+    }
+
+    function getStars(priority) {
+        const starsCount = Math.round(priority / 20);
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += i <= starsCount ? '★' : '☆';
+        }
+        return stars;
+    }
+
+    function renderTasks(tasks) {
+        const t = translations[currentLang];
+        document.getElementById('statTotal').innerHTML = tasks.length;
+        document.getElementById('statProgress').innerHTML = tasks.filter(t => t.status === 'in_progress').length;
+        document.getElementById('statDone').innerHTML = tasks.filter(t => t.status === 'done').length;
+        document.getElementById('statPending').innerHTML = tasks.filter(t => t.status === 'pending').length;
+
+        const container = document.getElementById('tasksList');
+        if (!tasks.length) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-icon">🌸</div><div>${t.emptyTasks}</div></div>`;
+            return;
+        }
+
+        const statusText = {
+            pending: currentLang === 'ru' ? '🌱 Ожидает' : '🌱 Pending',
+            in_progress: currentLang === 'ru' ? '🌿 В работе' : '🌿 Progress',
+            done: currentLang === 'ru' ? '🌸 Готово' : '🌸 Done'
+        };
+
+        container.innerHTML = tasks.map(task => {
+            let stars = getStars(task.priority);
+            let createdDate = new Date(task.created_at).toLocaleDateString(currentLang === 'ru' ? 'ru' : 'en');
+
+            let dueDateHtml = '';
+            if (task.due_date) {
+                const dueDate = new Date(task.due_date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const isOverdue = dueDate < today && task.status !== 'done';
+                const dueDateStr = dueDate.toLocaleDateString(currentLang === 'ru' ? 'ru' : 'en');
+                dueDateHtml = `<span class="due-date ${isOverdue ? 'overdue' : ''}">📅 ${dueDateStr}${isOverdue ? ' ⚠️' : ''}</span>`;
+            }
+
+            return `
+                <div class="task-item">
+                    <div class="task-content">
+                        <div class="task-title">${escapeHtml(task.title)}</div>
+                        ${task.description ? `<div class="task-desc">${escapeHtml(task.description)}</div>` : ''}
+                        <div class="task-meta">
+                            <span class="status-badge status-${task.status}">${statusText[task.status]}</span>
+                            <span class="priority-stars">${stars} ${task.priority}</span>
+                            <span>📅 ${createdDate}</span>
+                            ${dueDateHtml}
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <select onchange="changeStatus(${task.id}, this.value)">
+                            <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>🌱</option>
+                            <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>🌿</option>
+                            <option value="done" ${task.status === 'done' ? 'selected' : ''}>🌸</option>
+                        </select>
+                        <button class="delete-btn" onclick="deleteTask(${task.id})">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    async function createTask() {
+        let title = document.getElementById('newTitle').value.trim();
+        if (!title) return;
+
+        let dueDate = document.getElementById('newDueDate').value;
+        let priority = document.getElementById('newPriority').value;
+
+        let url = `/tasks?title=${encodeURIComponent(title)}&description=${encodeURIComponent(document.getElementById('newDesc').value)}&status=${document.getElementById('newStatus').value}&priority=${priority}`;
+
+        if (dueDate) {
+            url += `&due_date=${dueDate}`;
+        }
+
+        await api('POST', url);
+        document.getElementById('newTitle').value = '';
+        document.getElementById('newDesc').value = '';
+        document.getElementById('newDueDate').value = '';
+        loadTasks();
+    }
+
+    async function changeStatus(id, status) {
+        await api('PUT', `/tasks/${id}?status=${status}`);
+        loadTasks();
+    }
+
+    async function deleteTask(id) {
+        if (!confirm(translations[currentLang].deleteConfirm)) return;
+        await api('DELETE', `/tasks/${id}`);
+        loadTasks();
+    }
+
+    function debouncedSearch() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(loadTasks, 400);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
+    }
+
+    if (token) {
+        let user = localStorage.getItem('username') || 'User';
+        document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('appScreen').style.display = 'block';
+        document.getElementById('userName').innerHTML = user;
+        loadTasks();
+    }
+</script>
+</body>
+</html>
